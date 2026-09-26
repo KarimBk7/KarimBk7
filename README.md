@@ -6,6 +6,7 @@ Currently looking for a **part-time working-student position in Berlin or remote
 [Portfolio](https://my-website.abdilkarimb.workers.dev/) ·
 [Portfolio as PDF](https://my-website.abdilkarimb.workers.dev/dokumente/project-portfolio-abdil-karim-bakir.pdf) ·
 [CV](https://my-website.abdilkarimb.workers.dev/dokumente/cv-abdil-karim-bakir.pdf) ·
+[LinkedIn](https://www.linkedin.com/in/abdil-karim-bakir-03b7a9432/) ·
 [abdilkarimb@gmail.com](mailto:abdilkarimb@gmail.com)
 
 ---
