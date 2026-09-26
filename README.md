@@ -14,9 +14,9 @@ Currently looking for a **part-time working-student position in Berlin or remote
 
 Every figure below is measured, not estimated — each project sheet on the portfolio site shows how.
 
-| Project | What it is | Measured |
+| Project | What it is | Scope in numbers |
 | --- | --- | --- |
-| **Expense configurator for Projektron BCS** — [project sheet](https://my-website.abdilkarimb.workers.dev/en/projects/spesenkonfigurator/) *(client code, not public)* | JavaFX desktop application for a Berlin software company. Backend architect in a team of six. | Validation **34× faster** at 10,000 rows (5,051 ms → 148 ms); 9,600 UI events per pass reduced to 1 |
+| **Expense configurator for Projektron BCS** — [project sheet](https://my-website.abdilkarimb.workers.dev/en/projects/spesenkonfigurator/) *(client code, not public)* | JavaFX desktop application for a Berlin software company, as backend architect in a team of six: the table core with its frozen column, multi-tab editing with fully isolated state per file, CSV import and export, undo/redo, runtime language switch, crash recovery — and the performance work after the 10,000-row stress test. | 368 of 703 commits mine, 90+ classes, 19 test classes; validation 34× faster at 10,000 rows |
 | [**ReflowTask**](https://github.com/KarimBk7/ReflowTask) | Self-hosted task planner that repairs its own schedule: tasks become real time blocks, a missed block is replanned automatically. Spring Boot + React, running on a Raspberry Pi 5. | 168 backend + 29 frontend tests, green in CI; 7 Flyway migrations; multi-user isolation tested adversarially |
 | [**Kaiju Adventure**](https://github.com/KarimBk7/Little-Adventure) | A complete 2D action adventure in Java, built **without a game engine**: own game loop, rendering, collision detection, tile world and save games. | 80 × 80 tile world (6,400 tiles), 11 game states, ~4,960 lines of Java |
 | [**This portfolio site**](https://github.com/KarimBk7/My-Website) | Bilingual static site on a Cloudflare Worker. No framework in the browser, no cookies, no trackers — and its own Playwright + axe check suite running in CI. | 145 ms response time (median of five requests), ~5 KB of JavaScript per page, WCAG 2.1 AA enforced on every push |
@@ -25,10 +25,10 @@ Every figure below is measured, not estimated — each project sheet on the port
 
 ## Stack
 
-**Backend** Java · Spring Boot · JavaFX · Python · Go · SQL / PostgreSQL
-**Web** TypeScript · React · Astro · HTML / CSS
-**Infrastructure** Docker · Linux · Nginx / Caddy · Cloudflare Workers · GitHub Actions · Raspberry Pi
-**Testing** JUnit 5 · pytest · Vitest · Playwright · TestFX · axe
+- **Backend** — Java · Spring Boot · JavaFX · Python · Go · SQL / PostgreSQL
+- **Web** — TypeScript · React · Astro · HTML / CSS
+- **Infrastructure** — Docker · Linux · Nginx / Caddy · Cloudflare Workers · GitHub Actions · Raspberry Pi
+- **Testing** — JUnit 5 · pytest · Vitest · Playwright · TestFX · axe
 
 ## How I work
 
