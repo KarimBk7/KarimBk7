@@ -1,32 +1,40 @@
 #!/usr/bin/env bash
-# Setzt Beschreibung, Website und Topics fuer alle fuenf oeffentlichen Repos.
-# Ohne diese Felder zeigt GitHub auf dem Profil nur den Repo-Namen und eine
-# leere Zeile -- das ist der Grund, warum das Profil leer aussieht.
+# Setzt Beschreibung, Website und Topics fuer alle fuenf oeffentlichen Repos,
+# damit GitHub sie in Listen und Suche mit Kurzbeschreibung anzeigt.
 #
-# Einmal ausfuehren, dann ist es erledigt:
+# Ausfuehren:
 #   1. Token holen: https://github.com/settings/tokens?type=beta
 #      "Fine-grained token", Repository access: All repositories,
-#      Permissions -> Repository -> Metadata: Read and write.
+#      Permissions -> Repository -> Administration: Read and write.
+#      (Metadata allein ist nur lesend und reicht nicht.)
 #   2. export GITHUB_TOKEN=github_pat_...
 #   3. bash repos-beschriften.sh
+# Braucht curl und jq. Bricht beim ersten HTTP-Fehler mit GitHubs Antwort ab.
 set -euo pipefail
 : "${GITHUB_TOKEN:?export GITHUB_TOKEN=... zuerst setzen}"
+command -v jq >/dev/null || { echo "jq fehlt (z. B. apt install jq)" >&2; exit 1; }
 
 SEITE="https://my-website.abdilkarimb.workers.dev"
 
+api() { # methode url, JSON-Body auf stdin
+  local antwort
+  if ! antwort=$(curl -sS --fail-with-body -X "$1" "$2" \
+      -H "Authorization: Bearer $GITHUB_TOKEN" \
+      -H 'Accept: application/vnd.github+json' \
+      --data-binary @-); then
+    printf 'Fehler bei %s %s:\n%s\n' "$1" "$2" "$antwort" >&2
+    exit 1
+  fi
+}
+
 setze() { # repo beschreibung homepage topics...
   local repo="$1" beschreibung="$2" homepage="$3"; shift 3
-  local topics; topics=$(printf '"%s",' "$@"); topics="[${topics%,}]"
 
-  curl -sS -X PATCH "https://api.github.com/repos/KarimBk7/$repo" \
-    -H "Authorization: Bearer $GITHUB_TOKEN" \
-    -H 'Accept: application/vnd.github+json' \
-    -d "{\"description\":\"$beschreibung\",\"homepage\":\"$homepage\"}" >/dev/null
+  jq -n --arg d "$beschreibung" --arg h "$homepage" '{description: $d, homepage: $h}' |
+    api PATCH "https://api.github.com/repos/KarimBk7/$repo"
 
-  curl -sS -X PUT "https://api.github.com/repos/KarimBk7/$repo/topics" \
-    -H "Authorization: Bearer $GITHUB_TOKEN" \
-    -H 'Accept: application/vnd.github+json' \
-    -d "{\"names\":$topics}" >/dev/null
+  jq -n '{names: $ARGS.positional}' --args "$@" |
+    api PUT "https://api.github.com/repos/KarimBk7/$repo/topics"
 
   echo "  $repo"
 }
@@ -44,7 +52,7 @@ setze My-Website \
   astro typescript cloudflare-workers playwright accessibility wcag static-site portfolio
 
 setze Kaiju-Adventure \
-  "Kaiju Adventure: a complete 2D action adventure in Java, built without a game engine - own game loop, rendering, collision detection, tile world and save games." \
+  "A complete 2D action adventure in Java, built without a game engine - own game loop, rendering, collision detection, tile world and save games." \
   "$SEITE/en/projects/kaiju/" \
   java game-development 2d-game game-loop maven jpackage
 
