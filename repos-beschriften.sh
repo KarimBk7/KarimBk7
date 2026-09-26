@@ -10,16 +10,19 @@
 #   2. bash repos-beschriften.sh
 #      Das Skript fragt nach dem Token (Eingabe bleibt unsichtbar).
 #      Alternativ vorher: export GITHUB_TOKEN=github_pat_...
-# Braucht curl und jq. Bricht beim ersten HTTP-Fehler mit GitHubs Antwort ab.
+# Braucht nur bash und curl. Bricht beim ersten HTTP-Fehler mit GitHubs Antwort ab.
 set -euo pipefail
 if [ -z "${GITHUB_TOKEN:-}" ]; then
   read -rsp "GitHub-Token einfuegen (unsichtbar), dann Enter: " GITHUB_TOKEN; echo
 fi
 GITHUB_TOKEN="${GITHUB_TOKEN//[$'\r\n ']/}"
 [ -n "$GITHUB_TOKEN" ] || { echo "Kein Token eingegeben." >&2; exit 1; }
-command -v jq >/dev/null || { echo "jq fehlt (z. B. apt install jq)" >&2; exit 1; }
 
 SEITE="https://my-website.abdilkarimb.workers.dev"
+
+json() { # text -> JSON-String mit maskierten \ und "
+  local s=${1//\\/\\\\}; s=${s//\"/\\\"}; printf '"%s"' "$s"
+}
 
 api() { # methode url, JSON-Body auf stdin
   local antwort
@@ -35,10 +38,13 @@ api() { # methode url, JSON-Body auf stdin
 setze() { # repo beschreibung homepage topics...
   local repo="$1" beschreibung="$2" homepage="$3"; shift 3
 
-  jq -n --arg d "$beschreibung" --arg h "$homepage" '{description: $d, homepage: $h}' |
+  local topics="" t
+  for t in "$@"; do topics+="${topics:+,}$(json "$t")"; done
+
+  printf '{"description":%s,"homepage":%s}' "$(json "$beschreibung")" "$(json "$homepage")" |
     api PATCH "https://api.github.com/repos/KarimBk7/$repo"
 
-  jq -n '{names: $ARGS.positional}' --args "$@" |
+  printf '{"names":[%s]}' "$topics" |
     api PUT "https://api.github.com/repos/KarimBk7/$repo/topics"
 
   echo "  $repo"
