@@ -63,6 +63,10 @@ Notes, terminal logs and runnable examples across 30 topics, grown over 17 month
 - **Infrastructure** — Docker · Linux · Nginx / Caddy · Cloudflare Workers · GitHub Actions · Raspberry Pi
 - **Testing** — JUnit 5 · pytest · Vitest · Playwright · TestFX · axe
 
+## Languages
+
+German and Arabic (native) · English (C2) · French (B2)
+
 ## How I work
 
 - I measure before and after, and I keep the numbers.
