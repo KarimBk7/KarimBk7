@@ -7,11 +7,16 @@
 #      "Fine-grained token", Repository access: All repositories,
 #      Permissions -> Repository -> Administration: Read and write.
 #      (Metadata allein ist nur lesend und reicht nicht.)
-#   2. export GITHUB_TOKEN=github_pat_...
-#   3. bash repos-beschriften.sh
+#   2. bash repos-beschriften.sh
+#      Das Skript fragt nach dem Token (Eingabe bleibt unsichtbar).
+#      Alternativ vorher: export GITHUB_TOKEN=github_pat_...
 # Braucht curl und jq. Bricht beim ersten HTTP-Fehler mit GitHubs Antwort ab.
 set -euo pipefail
-: "${GITHUB_TOKEN:?export GITHUB_TOKEN=... zuerst setzen}"
+if [ -z "${GITHUB_TOKEN:-}" ]; then
+  read -rsp "GitHub-Token einfuegen (unsichtbar), dann Enter: " GITHUB_TOKEN; echo
+fi
+GITHUB_TOKEN="${GITHUB_TOKEN//[$'\r\n ']/}"
+[ -n "$GITHUB_TOKEN" ] || { echo "Kein Token eingegeben." >&2; exit 1; }
 command -v jq >/dev/null || { echo "jq fehlt (z. B. apt install jq)" >&2; exit 1; }
 
 SEITE="https://my-website.abdilkarimb.workers.dev"
