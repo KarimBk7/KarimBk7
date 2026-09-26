@@ -43,7 +43,7 @@ setze My-Website \
   "$SEITE/" \
   astro typescript cloudflare-workers playwright accessibility wcag static-site portfolio
 
-setze Little-Adventure \
+setze Kaiju-Adventure \
   "Kaiju Adventure: a complete 2D action adventure in Java, built without a game engine - own game loop, rendering, collision detection, tile world and save games." \
   "$SEITE/en/projects/kaiju/" \
   java game-development 2d-game game-loop maven jpackage
@@ -53,7 +53,7 @@ setze Wordle-Solver \
   "$SEITE/en/projects/wordle/" \
   python tkinter wordle solver pyinstaller no-dependencies
 
-setze -propra-Lern-Repository \
+setze Learning-repository \
   "Notes, terminal logs and runnable examples across 30 topics, grown over 17 months alongside FU Berlin's programming practicum. 67/67 assignments accepted." \
   "$SEITE/en/projects/lernrepo/" \
   learning-resources python go sql linux web-development testing
