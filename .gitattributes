@@ -1,0 +1,2 @@
+# Shell-Skripte immer mit LF auschecken, sonst bricht bash unter Windows ab
+*.sh text eol=lf
